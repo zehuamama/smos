@@ -58,10 +58,7 @@ func (c *Consistent) Add(host string) {
 
 	}
 	sort.Slice(c.sortedSet, func(i int, j int) bool {
-		if c.sortedSet[i] < c.sortedSet[j] {
-			return true
-		}
-		return false
+		return c.sortedSet[i] < c.sortedSet[j]
 	})
 }
 
@@ -140,8 +137,5 @@ func (c *Consistent) loadOK(host string) bool {
 		avg = 1
 	}
 	avg = math.Ceil(avg * loadFactor)
-	if float64(c.loadMap[host].Load)+1 <= avg {
-		return true
-	}
-	return false
+	return float64(c.loadMap[host].Load)+1 <= avg
 }
