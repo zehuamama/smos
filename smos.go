@@ -9,11 +9,11 @@ import "sync"
 const salt = "%$#"
 
 // Function represents a function, including its UUID,
-// function name, and library file of the function
+// function name, library  of the function
 type Function struct {
 	FuncUUID      string
 	FuncName      string
-	FuncSortedSet []string
+	LibSortedSet []string
 }
 
 // SmoS refers to serverless multi-objective scheduling algorithm
