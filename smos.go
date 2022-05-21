@@ -9,10 +9,10 @@ import "sync"
 const salt = "%$#"
 
 // Function represents a function, including its UUID,
-// function name, library  of the function
+// function name, library of the function
 type Function struct {
-	FuncUUID      string
-	FuncName      string
+	FuncUUID     string
+	FuncName     string
 	LibSortedSet []string
 }
 
@@ -40,7 +40,7 @@ func (s *SmoS) Add(host string, maxLoad uint64) {
 }
 
 // Remove host from the ring
-func (s *SmoS) Remove(host string, maxLoad uint64) {
+func (s *SmoS) Remove(host string) {
 	s.Lock()
 	defer s.Unlock()
 	delete(s.maxLoadMap, host)
@@ -62,16 +62,16 @@ func (s *SmoS) Done(host string) {
 }
 
 // Balance chooses the appropriate host to call function
-func (s *SmoS) Balance(function Function) (string, error) {
+func (s *SmoS) Balance(function *Function) (string, error) {
 	s.RLock()
 	defer s.RUnlock()
 	assign := ""
-	if len(function.FuncSortedSet) != 0 {
-		node1, err := s.c.Get(function.FuncSortedSet[0])
+	if len(function.LibSortedSet) != 0 {
+		node1, err := s.c.Get(function.LibSortedSet[0])
 		if err != nil {
 			return "", err
 		}
-		node2, err := s.c.Get(function.FuncSortedSet[0] + salt)
+		node2, err := s.c.Get(function.LibSortedSet[0] + salt)
 		if err != nil {
 			return "", err
 		}
