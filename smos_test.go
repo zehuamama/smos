@@ -5,6 +5,7 @@
 package smos
 
 import (
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -25,4 +26,12 @@ func TestSmoS_Balance(t *testing.T) {
 	})
 	assert.Equal(t, err, nil)
 	assert.Equal(t, host, "192.168.1.1")
+	smos.Remove("192.168.1.1")
+	host, err = smos.Balance(&Function{
+		FuncUUID:     "xj92-3242-csxa-JKjx",
+		FuncName:     "hello world",
+		LibSortedSet: []string{"testify", "quic"},
+	})
+	assert.Equal(t, err, errors.New("no hosts added"))
+	assert.Equal(t, host, "")
 }

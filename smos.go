@@ -71,10 +71,7 @@ func (s *SmoS) Balance(function *Function) (string, error) {
 		if err != nil {
 			return "", err
 		}
-		node2, err := s.c.Get(function.LibSortedSet[0] + salt)
-		if err != nil {
-			return "", err
-		}
+		node2, _ := s.c.Get(function.LibSortedSet[0] + salt)
 		if s.c.GetLoad(node1) < s.c.GetLoad(node2) {
 			assign = node1
 		} else {
@@ -84,9 +81,6 @@ func (s *SmoS) Balance(function *Function) (string, error) {
 			return assign, nil
 		}
 	}
-	assign, err := s.c.GetLeast(function.FuncUUID)
-	if err != nil {
-		return "", err
-	}
+	assign, _ = s.c.GetLeast(function.FuncUUID)
 	return assign, nil
 }
